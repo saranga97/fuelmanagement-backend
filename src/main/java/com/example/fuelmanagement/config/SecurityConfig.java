@@ -22,9 +22,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/users/register").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()  // Disable all security restrictions
                 );
         return http.build();
     }
 }
+

@@ -1,50 +1,68 @@
 package com.example.fuelmanagement.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Table(name = "vehicles")
 public class Vehicle {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String NumberPlateID;
-    private String modelName;
+    @Getter
+    private String registrationNumber;
+    @Getter
+    private String ownerName;
+    @Getter
+    private String engineNumber;
+    @Getter
+    private String vehicleClass;
+    @Getter
+    private String conditionsAndNotes;
+    @Getter
+    private String make;
+    @Getter
+    private String model;
+    private int yearOfManufacture;
+    private String ownershipName;
+    private boolean isMortgaged;
 
-    @Enumerated(EnumType.STRING)
-    private FUEL_TYPE fuel_type;
-
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getNumberPlateID() {
-        return NumberPlateID;
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 
-    public void setNumberPlateID(String numberPlateID) {
-        NumberPlateID = numberPlateID;
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
-    public FUEL_TYPE getFuel_type() {
-        return fuel_type;
+    public void setEngineNumber(String engineNumber) {
+        this.engineNumber = engineNumber;
     }
 
-    public void setFuel_type(FUEL_TYPE fuel_type) {
-        this.fuel_type = fuel_type;
+    public void setVehicleClass(String vehicleClass) {
+        this.vehicleClass = vehicleClass;
     }
 
-    public String getModelName() {
-        return modelName;
+    public void setConditionsAndNotes(String conditionsAndNotes) {
+        this.conditionsAndNotes = conditionsAndNotes;
     }
 
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setMake(String make) {
+        this.make = make;
     }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+// Getters and setters
 }
-

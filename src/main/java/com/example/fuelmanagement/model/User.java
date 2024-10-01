@@ -15,12 +15,16 @@ public class User {
 
     @Getter
     private String fullName;
+
     @Getter
     private String email;
+
     @Getter
     private String username;
+
     @Getter
     private String password;
+
     @Getter
     private String identityCardNumber;
 

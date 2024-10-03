@@ -58,4 +58,36 @@ public class User {
     public void setRole(USER_ROLE role) {
         this.role = role;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getIdentityCardNumber() {
+        return identityCardNumber;
+    }
+
+    public USER_ROLE getRole() {
+        return role;
+    }
+
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
 }

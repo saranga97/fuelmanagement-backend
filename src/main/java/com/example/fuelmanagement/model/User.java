@@ -31,6 +31,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 
+    //OneToMany mapping for stations owned by the user
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Station> stations;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -57,5 +61,49 @@ public class User {
 
     public void setRole(USER_ROLE role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getIdentityCardNumber() {
+        return identityCardNumber;
+    }
+
+    public USER_ROLE getRole() {
+        return role;
+    }
+
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    public List<Station> getStations() {
+        return stations;
+    }
+
+    public void setStations(List<Station> stations) {
+        this.stations = stations;
     }
 }

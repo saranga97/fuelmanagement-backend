@@ -1,7 +1,6 @@
 package com.example.fuelmanagement.model;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 

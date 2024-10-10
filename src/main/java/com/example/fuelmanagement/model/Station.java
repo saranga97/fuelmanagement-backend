@@ -2,17 +2,35 @@ package com.example.fuelmanagement.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "stations")
 public class Station {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String stationName;
-    private String location;
-    private String ownerName;
+    private String district;
+    private String address;
+    private String ownershipIdNumber;
+    private String ownershipEmail;
+    private double remainingFuelAmount;
 
+    public Station() {
+    }
+
+    public Station(String stationName, String district, String address, String ownershipIdNumber, String ownershipEmail, double remainingFuelAmount) {
+        this.stationName = stationName;
+        this.district = district;
+        this.address = address;
+        this.ownershipIdNumber = ownershipIdNumber;
+        this.ownershipEmail = ownershipEmail;
+        this.remainingFuelAmount = remainingFuelAmount;
+    }
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -29,19 +47,43 @@ public class Station {
         this.stationName = stationName;
     }
 
-    public String getLocation() {
-        return location;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getAddress() {
+        return address;
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getOwnershipIdNumber() {
+        return ownershipIdNumber;
+    }
+
+    public void setOwnershipIdNumber(String ownershipIdNumber) {
+        this.ownershipIdNumber = ownershipIdNumber;
+    }
+
+    public String getOwnershipEmail() {
+        return ownershipEmail;
+    }
+
+    public void setOwnershipEmail(String ownershipEmail) {
+        this.ownershipEmail = ownershipEmail;
+    }
+
+    public double getRemainingFuelAmount() {
+        return remainingFuelAmount;
+    }
+
+    public void setRemainingFuelAmount(double remainingFuelAmount) {
+        this.remainingFuelAmount = remainingFuelAmount;
     }
 }

@@ -64,5 +64,69 @@ public class Vehicle {
     public void setModel(String model) {
         this.model = model;
     }
-// Getters and setters
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public String getEngineNumber() {
+        return engineNumber;
+    }
+
+    public String getVehicleClass() {
+        return vehicleClass;
+    }
+
+    public String getConditionsAndNotes() {
+        return conditionsAndNotes;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getYearOfManufacture() {
+        return yearOfManufacture;
+    }
+
+    public void setYearOfManufacture(int yearOfManufacture) {
+        this.yearOfManufacture = yearOfManufacture;
+    }
+
+    public String getOwnershipName() {
+        return ownershipName;
+    }
+
+    public void setOwnershipName(String ownershipName) {
+        this.ownershipName = ownershipName;
+    }
+
+    public boolean isMortgaged() {
+        return isMortgaged;
+    }
+
+    public void setMortgaged(boolean mortgaged) {
+        isMortgaged = mortgaged;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

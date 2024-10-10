@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -18,6 +19,7 @@ public class FuelStock {
 
     @ManyToOne
     @JoinColumn(name = "station_id")
+    @JsonIgnore
     private Station station;
 
     public Long getId() {

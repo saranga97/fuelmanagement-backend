@@ -1,8 +1,10 @@
 package com.example.fuelmanagement.model;
 
+
 import jakarta.persistence.*;
+import lombok.Getter;
 
-
+@Getter
 @Entity
 @Table(name = "stations")
 public class Station {
@@ -30,57 +32,28 @@ public class Station {
         this.remainingFuelAmount = remainingFuelAmount;
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getStationName() {
-        return stationName;
     }
 
     public void setStationName(String stationName) {
         this.stationName = stationName;
     }
 
-    public String getDistrict() {
-        return district;
-    }
-
     public void setDistrict(String district) {
         this.district = district;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getOwnershipIdNumber() {
-        return ownershipIdNumber;
-    }
-
     public void setOwnershipIdNumber(String ownershipIdNumber) {
         this.ownershipIdNumber = ownershipIdNumber;
     }
 
-    public String getOwnershipEmail() {
-        return ownershipEmail;
-    }
-
     public void setOwnershipEmail(String ownershipEmail) {
         this.ownershipEmail = ownershipEmail;
-    }
-
-    public double getRemainingFuelAmount() {
-        return remainingFuelAmount;
     }
 
     public void setRemainingFuelAmount(double remainingFuelAmount) {

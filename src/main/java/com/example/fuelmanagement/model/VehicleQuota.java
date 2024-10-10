@@ -1,9 +1,11 @@
-package com.fuelmanagement.model;
+package com.example.fuelmanagement.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "vehicle_quota")
 public class VehicleQuota {
@@ -21,17 +23,8 @@ public class VehicleQuota {
         this.weeklyQuota = weeklyQuota;
     }
 
-    // Getters and Setters
-    public String getVehicleClass() {
-        return vehicleClass;
-    }
-
     public void setVehicleClass(String vehicleClass) {
         this.vehicleClass = vehicleClass;
-    }
-
-    public double getWeeklyQuota() {
-        return weeklyQuota;
     }
 
     public void setWeeklyQuota(double weeklyQuota) {

@@ -87,28 +87,6 @@ public class StationOwnerController {
         return ResponseEntity.ok(stations);
     }
 
-
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @GetMapping("/stations")
-//    public ResponseEntity<List<StationDTO>> getAllStations() {
-//        return ResponseEntity.ok(stationManagementService.getAllStations());
-//    }
-
-
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FUEL_STATION_OWNER')")
-//    @GetMapping("/{stationId}/fuel-stock")
-//    public List<FuelStock> getFuelStock(@PathVariable Long stationId) {
-//        return stationManagementService.getAvailableFuelStockByStation(stationId);
-//    }
-
-    // Endpoint to add fuel stock
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @PostMapping("/fuel-stock/add-stock")
-//    public ResponseEntity<FuelStockDTO> addFuelStock(@RequestBody FuelStockDTO fuelStockDTO) {
-//        FuelStockDTO createdFuelStock = fuelStockService.addFuelStock(fuelStockDTO);
-//        return ResponseEntity.ok(createdFuelStock);
-//    }
-
     // Endpoint to view available fuel stock for a specific station
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/station/{stationId}/fuel-stock")

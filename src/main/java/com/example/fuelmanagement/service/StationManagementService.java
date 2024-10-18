@@ -30,30 +30,10 @@ public class StationManagementService {
     @Autowired
     private FuelStockRepository fuelStockRepository;
 
-//    @Autowired
-//    private AuthenticationService authenticationService;
 
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     *
-     * Signup
-     * login
-     * Register station
-     * view all stations
-     * view fuel stock in stations
-     */
-
-//    // Method to register a user (signup)
-//    public UserDTO signup(UserDTO userDTO) {
-//        // Check if the password is null or empty
-//        if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()) {
-//            throw new IllegalArgumentException("Password cannot be null or empty");
-//        }
-//        userDTO.setRole(USER_ROLE.ROLE_FUEL_STATION_OWNER);  // Assign default role for new signups
-//        return authenticationService.registerUser(userDTO);  // Call authentication service to register user
-//    }
 
     // Method to register a station by a user
     public StationDTO registerStation(StationDTO stationDTO) {
@@ -77,11 +57,6 @@ public class StationManagementService {
         return stationMapper.stationToStationDTO(savedStation); // Return saved station as DTO
     }
 
-//    public StationDTO createStation(StationDTO stationDTO) {
-//        Station station = stationMapper.stationDTOToStation(stationDTO);
-//        Station savedStation = stationRepository.save(station);
-//        return stationMapper.stationToStationDTO(savedStation);
-//    }
 
     // Method to view stations by user role
     public List<StationDTO> viewStationsByUser() {

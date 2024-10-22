@@ -33,7 +33,6 @@ public class VehicleController {
         return ResponseEntity.ok(registeredVehicle);
     }
 
-
     // Endpoint to get all vehicles owned by the logged-in user
     @GetMapping
     public ResponseEntity<List<Vehicle>> getVehiclesByOwner(@AuthenticationPrincipal UserDetails userDetails) {

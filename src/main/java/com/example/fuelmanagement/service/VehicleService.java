@@ -9,6 +9,7 @@ import com.example.fuelmanagement.repository.VehicleQuotaRepository;
 import com.example.fuelmanagement.repository.VehicleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -74,6 +75,9 @@ public class VehicleService {
         vehicle.setVehicleQuota(vehicleQuota);
         vehicle.setOwnershipId(vehicleDTO.getOwnershipId());
 
+        // Set the remaining quota to the full weekly quota
+        vehicle.setRemainingQuota(vehicleQuota.getWeeklyQuota());
+
         logger.info("Vehicle successfully registered: {}", vehicle);
 
         return vehicleRepository.save(vehicle);
@@ -84,7 +88,6 @@ public class VehicleService {
         // Retrieve vehicles for the given ownership ID (ID card number)
         return vehicleRepository.findByOwnershipId(idCardNumber);
     }
-
 
     public VehicleOwnerResponseDTO getLoggedInVehicleOwnerDetails(String username) {
         // Fetch vehicle owner details
@@ -106,4 +109,17 @@ public class VehicleService {
         );
     }
 
+    @Scheduled(cron = "0 0 0 * * MON")
+    public void resetWeeklyQuota() {
+        logger.info("Resetting weekly quotas for all vehicles...");
+
+        List<Vehicle> allVehicles = vehicleRepository.findAll();
+        for (Vehicle vehicle : allVehicles) {
+            int weeklyQuota = vehicle.getVehicleQuota().getWeeklyQuota();
+            vehicle.setRemainingQuota(weeklyQuota);
+            vehicleRepository.save(vehicle);
+        }
+
+        logger.info("Weekly quotas reset successfully.");
+    }
 }

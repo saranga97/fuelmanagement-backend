@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.controller;
 
+import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
 import com.example.fuelmanagement.model.Station;
 import com.example.fuelmanagement.model.StationOwner;
 import com.example.fuelmanagement.model.Vehicle;
@@ -59,6 +60,26 @@ public class AdminController {
         Station registeredStation = adminService.registerStation(
                 station.getName(), station.getAddress(), station.getStationOwner().getId());
         return ResponseEntity.ok(registeredStation);
+    }
+
+//    @GetMapping("/stations")
+//    public ResponseEntity<List<Station>> getAllStationsWithOwners(
+//            @AuthenticationPrincipal UserDetails userDetails) {
+//
+//        validateAdminAccess(userDetails);  // Ensure only admin can access this
+//
+//        List<Station> stations = adminService.getAllStations();
+//        return ResponseEntity.ok(stations);
+//    }
+
+    @GetMapping("/stations")
+    public ResponseEntity<List<StationWithOwnerDTO>> getAllStationsWithOwners(
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        validateAdminAccess(userDetails);
+
+        List<StationWithOwnerDTO> stations = adminService.getAllStationsWithOwners();
+        return ResponseEntity.ok(stations);
     }
 
 

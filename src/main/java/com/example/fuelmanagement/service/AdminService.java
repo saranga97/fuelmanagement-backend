@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.service;
 
+import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
 import com.example.fuelmanagement.model.Station;
 import com.example.fuelmanagement.model.StationOwner;
 import com.example.fuelmanagement.model.Vehicle;
@@ -10,6 +11,7 @@ import com.example.fuelmanagement.repository.VehicleOwnerRepository;
 import com.example.fuelmanagement.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +59,26 @@ public class AdminService {
 //        Station station = new Station(name, address, stationOwner);
 //        return stationRepository.save(station);
 //    }
+
+    public List<Station> getAllStations() {
+        return stationRepository.findAll();  // Fetch all stations with owners
+    }
+
+    public List<StationWithOwnerDTO> getAllStationsWithOwners() {
+        List<Station> stations = stationRepository.findAllWithOwners();
+        List<StationWithOwnerDTO> stationDTOs = new ArrayList<>();
+
+        for (Station station : stations) {
+            stationDTOs.add(new StationWithOwnerDTO(
+                    station.getName(),
+                    station.getAddress(),
+                    station.getStationOwner().getFullName(),
+                    station.getStationOwner().getEmail()
+            ));
+        }
+
+        return stationDTOs;
+    }
 
     public Station registerStation(String name, String address, Long stationOwnerId) {
         StationOwner owner = stationOwnerRepository.findById(stationOwnerId)

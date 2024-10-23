@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.controller;
 
+import com.example.fuelmanagement.DTO.FuelInventoryUpdateDTO;
 import com.example.fuelmanagement.DTO.StationResponseDTO;
 import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
 import com.example.fuelmanagement.model.*;
@@ -107,7 +108,17 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/stations/update-fuel-quota")
+    public ResponseEntity<String> updateFuelQuota(
+            @RequestBody FuelInventoryUpdateDTO fuelInventoryUpdateDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
+        validateAdminAccess(userDetails);
+
+        adminService.updateFuelQuota(fuelInventoryUpdateDTO);
+
+        return ResponseEntity.ok("Fuel quotas updated successfully for station ID: " + fuelInventoryUpdateDTO.getStationId());
+    }
 
 
     // Validate that the user accessing these endpoints is an admin

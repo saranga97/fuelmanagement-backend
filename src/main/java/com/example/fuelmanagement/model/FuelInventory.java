@@ -17,7 +17,7 @@ public class FuelInventory {
     @Column(nullable = false)
     private int remainingQuota;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "station_id", referencedColumnName = "stationId")
     private Station station;
 

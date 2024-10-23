@@ -1,25 +1,35 @@
 package com.example.fuelmanagement.model;
 
 import jakarta.persistence.*;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "stations")
 public class Station {
 
     @Id
-    private String stationId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long stationId;  // Ensure this matches with the @JoinColumn
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
-    private String ownershipId;
+    @ManyToOne
+    @JoinColumn(name = "station_owner_id", nullable = false)
+    private StationOwner stationOwner;
 
-    @Column(nullable = false)
-    private String ownershipEmail;
+    public Station() {
+    }
 
-    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FuelInventory> fuelInventory;
-
-    // Getters and setters
+    public Station(String name, String address, StationOwner stationOwner) {
+        this.name = name;
+        this.address = address;
+        this.stationOwner = stationOwner;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.fuelmanagement.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,54 +10,43 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "admins", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(name = "admins", uniqueConstraints = {@UniqueConstraint(columnNames = {"username", "email"})})
 public class Admin implements UserDetails {
 
-    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
+    @Column(nullable = false)
     private String fullName;
 
-    @Getter
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Getter
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Getter
     @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.ROLE_ADMIN;
 
-    // Getters and setters
-
-    public void setId(Long id) {
-        this.id = id;
+    // Constructors
+    public Admin() {
     }
 
-    public void setFullName(String fullName) {
+    public Admin(String fullName, String email, String username, String password) {
         this.fullName = fullName;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
     }
+
+    // UserDetails Interface Methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

@@ -1,16 +1,15 @@
 package com.example.fuelmanagement.controller;
 
+import com.example.fuelmanagement.DTO.StationResponseDTO;
 import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
-import com.example.fuelmanagement.model.Station;
-import com.example.fuelmanagement.model.StationOwner;
-import com.example.fuelmanagement.model.Vehicle;
-import com.example.fuelmanagement.model.VehicleOwner;
+import com.example.fuelmanagement.model.*;
 import com.example.fuelmanagement.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.fuelmanagement.model.FuelInventory;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -72,15 +71,43 @@ public class AdminController {
 //        return ResponseEntity.ok(stations);
 //    }
 
+//    @GetMapping("/stations")
+//    public ResponseEntity<List<StationWithOwnerDTO>> getAllStationsWithOwners(
+//            @AuthenticationPrincipal UserDetails userDetails) {
+//
+//        validateAdminAccess(userDetails);
+//
+//        List<StationWithOwnerDTO> stations = adminService.getAllStationsWithOwners();
+//        return ResponseEntity.ok(stations);
+//    }
+
     @GetMapping("/stations")
-    public ResponseEntity<List<StationWithOwnerDTO>> getAllStationsWithOwners(
+    public ResponseEntity<List<StationResponseDTO>> getAllStationsWithFuelQuota(
             @AuthenticationPrincipal UserDetails userDetails) {
 
         validateAdminAccess(userDetails);
 
-        List<StationWithOwnerDTO> stations = adminService.getAllStationsWithOwners();
-        return ResponseEntity.ok(stations);
+        List<Station> stations = adminService.getAllStations();
+        List<StationResponseDTO> response = new ArrayList<>();
+
+        for (Station station : stations) {
+            FuelInventory inventory = adminService.getFuelInventoryByStation(station);
+            response.add(new StationResponseDTO(
+                    station.getName(),
+                    station.getAddress(),
+                    station.getStationOwner().getFullName(),
+                    station.getStationOwner().getEmail(),
+                    inventory.getDieselQuota(),
+                    inventory.getSuperDieselQuota(),
+                    inventory.getPetrol92Quota(),
+                    inventory.getPetrol95Quota()
+            ));
+        }
+
+        return ResponseEntity.ok(response);
     }
+
+
 
 
     // Validate that the user accessing these endpoints is an admin

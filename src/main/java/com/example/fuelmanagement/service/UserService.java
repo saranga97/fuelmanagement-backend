@@ -1,11 +1,11 @@
 package com.example.fuelmanagement.service;
 
-import com.example.fuelmanagement.model.Admin;
-import com.example.fuelmanagement.model.StationOwner;
-import com.example.fuelmanagement.model.VehicleOwner;
 import com.example.fuelmanagement.DTO.AdminDTO;
 import com.example.fuelmanagement.DTO.StationOwnerDTO;
 import com.example.fuelmanagement.DTO.VehicleOwnerDTO;
+import com.example.fuelmanagement.model.Admin;
+import com.example.fuelmanagement.model.StationOwner;
+import com.example.fuelmanagement.model.VehicleOwner;
 import com.example.fuelmanagement.repository.AdminRepository;
 import com.example.fuelmanagement.repository.StationOwnerRepository;
 import com.example.fuelmanagement.repository.VehicleOwnerRepository;
@@ -31,7 +31,9 @@ public class UserService implements UserDetailsService {
         this.adminRepository = adminRepository;
     }
 
-    // Save Vehicle Owner
+    /**
+     * Save a new vehicle owner.
+     */
     public void saveVehicleOwner(VehicleOwnerDTO dto) {
         VehicleOwner vehicleOwner = new VehicleOwner();
         vehicleOwner.setFullName(dto.getFullName());
@@ -43,7 +45,9 @@ public class UserService implements UserDetailsService {
         vehicleOwnerRepository.save(vehicleOwner);
     }
 
-    // Save Station Owner
+    /**
+     * Save a new station owner.
+     */
     public void saveStationOwner(StationOwnerDTO dto) {
         StationOwner stationOwner = new StationOwner();
         stationOwner.setFullName(dto.getFullName());
@@ -52,11 +56,12 @@ public class UserService implements UserDetailsService {
         stationOwner.setPassword(dto.getPassword());
         stationOwner.setIdCardNumber(dto.getIdCardNumber());
         stationOwner.setPhoneNumber(dto.getPhoneNumber());
-        //stationOwner.setStationAddress(dto.getStationAddress());
         stationOwnerRepository.save(stationOwner);
     }
 
-    // Save Admin
+    /**
+     * Save a new admin.
+     */
     public void saveAdmin(AdminDTO dto) {
         Admin admin = new Admin();
         admin.setFullName(dto.getFullName());
@@ -66,22 +71,23 @@ public class UserService implements UserDetailsService {
         adminRepository.save(admin);
     }
 
-    // Load User by Username (for JWT Authentication)
+    /**
+     * Load user (either Vehicle Owner or Station Owner) by username for authentication.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Search for the user in VehicleOwner repository
+        // Search for the user in the VehicleOwner repository
         Optional<VehicleOwner> vehicleOwner = vehicleOwnerRepository.findByUsername(username);
         if (vehicleOwner.isPresent()) {
             return vehicleOwner.get();
         }
 
-        // Search for the user in StationOwner repository
+        // Search for the user in the StationOwner repository
         Optional<StationOwner> stationOwner = stationOwnerRepository.findByUsername(username);
         if (stationOwner.isPresent()) {
             return stationOwner.get();
         }
 
-        // Search for the user in Admin repository
         Optional<Admin> admin = adminRepository.findByUsername(username);
         if (admin.isPresent()) {
             return admin.get();
@@ -91,5 +97,11 @@ public class UserService implements UserDetailsService {
         throw new UsernameNotFoundException("User not found with username: " + username);
     }
 
-
+    /**
+     * Load an admin by username for admin authentication.
+     */
+    public Admin loadAdminByUsername(String username) {
+        return adminRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin not found with username: " + username));
+    }
 }

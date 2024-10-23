@@ -1,19 +1,12 @@
 package com.example.fuelmanagement.service;
 
 import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
-import com.example.fuelmanagement.model.Station;
-import com.example.fuelmanagement.model.StationOwner;
-import com.example.fuelmanagement.model.Vehicle;
-import com.example.fuelmanagement.model.VehicleOwner;
-import com.example.fuelmanagement.repository.StationOwnerRepository;
-import com.example.fuelmanagement.repository.StationRepository;
-import com.example.fuelmanagement.repository.VehicleOwnerRepository;
-import com.example.fuelmanagement.repository.VehicleRepository;
+import com.example.fuelmanagement.model.*;
+import com.example.fuelmanagement.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminService {
@@ -24,13 +17,16 @@ public class AdminService {
     private final VehicleOwnerRepository vehicleOwnerRepository;
     private final VehicleRepository vehicleRepository;
 
+    private final FuelInventoryRepository fuelInventoryRepository;
+
     public AdminService(StationRepository stationRepository, StationOwnerRepository stationOwnerRepository,
                         VehicleOwnerRepository vehicleOwnerRepository,
-                        VehicleRepository vehicleRepository) {
+                        VehicleRepository vehicleRepository, FuelInventoryRepository fuelInventoryRepository) {
         this.stationRepository = stationRepository;
         this.stationOwnerRepository = stationOwnerRepository;
         this.vehicleOwnerRepository = vehicleOwnerRepository;
         this.vehicleRepository = vehicleRepository;
+        this.fuelInventoryRepository = fuelInventoryRepository;
     }
 
     // Retrieve all station owners
@@ -62,6 +58,11 @@ public class AdminService {
 
     public List<Station> getAllStations() {
         return stationRepository.findAll();  // Fetch all stations with owners
+    }
+
+    public FuelInventory getFuelInventoryByStation(Station station) {
+        return fuelInventoryRepository.findByStation(station)
+                .orElseThrow(() -> new IllegalArgumentException("Fuel inventory not found for station: " + station.getName()));
     }
 
     public List<StationWithOwnerDTO> getAllStationsWithOwners() {

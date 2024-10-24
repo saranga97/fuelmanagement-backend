@@ -11,6 +11,8 @@ import java.util.List;
 public interface StationRepository extends JpaRepository<Station, Long> {
 
     // Fetch stations along with their station owners
-    @Query("SELECT s FROM Station s JOIN FETCH s.stationOwner")
+    @Query("SELECT s FROM Station s JOIN FETCH s.stationOwner JOIN FETCH s.fuelInventory")
     List<Station> findAllWithOwners();
+
+    List<Station> findByStationOwner_Username(String username);
 }

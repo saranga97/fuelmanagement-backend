@@ -66,7 +66,6 @@ public class AdminService {
                 .orElseThrow(() -> new IllegalArgumentException("Fuel inventory not found for station: " + station.getName()));
     }
 
-
     public List<StationWithOwnerDTO> getAllStationsWithOwners() {
         List<Station> stations = stationRepository.findAllWithOwners();
         List<StationWithOwnerDTO> stationDTOs = new ArrayList<>();
@@ -86,26 +85,20 @@ public class AdminService {
     public void updateFuelQuota(FuelInventoryUpdateDTO fuelInventoryUpdateDTO) {
         Long stationId = fuelInventoryUpdateDTO.getStationId();
 
-        // Retrieve the station entity first
         Station station = stationRepository.findById(stationId)
                 .orElseThrow(() -> new IllegalArgumentException("Station not found with ID: " + stationId));
 
-        // Now retrieve the fuel inventory by station
         FuelInventory fuelInventory = fuelInventoryRepository.findByStation(station)
                 .orElseThrow(() -> new IllegalArgumentException("Fuel inventory not found for station: " + station.getName()));
 
-        // Update the fuel quotas
         fuelInventory.setDieselQuota(fuelInventoryUpdateDTO.getDieselQuota());
         fuelInventory.setSuperDieselQuota(fuelInventoryUpdateDTO.getSuperDieselQuota());
         fuelInventory.setPetrol92Quota(fuelInventoryUpdateDTO.getPetrol92Quota());
         fuelInventory.setPetrol95Quota(fuelInventoryUpdateDTO.getPetrol95Quota());
 
-        // Save the updated fuel inventory
+
         fuelInventoryRepository.save(fuelInventory);
     }
-
-
-
 
     public Station registerStation(String name, String address, Long stationOwnerId) {
         StationOwner owner = stationOwnerRepository.findById(stationOwnerId)

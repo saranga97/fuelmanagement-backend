@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -28,6 +30,9 @@ public class Station {
 
     @OneToOne(mappedBy = "station", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private FuelInventory fuelInventory;
+
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Operator> operators;
 
     public Station() {
     }

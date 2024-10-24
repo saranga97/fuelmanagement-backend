@@ -39,10 +39,10 @@ public class Vehicle {
     private int manufacturedYear;
 
     @Column(nullable = false)
-    private String ownershipId;  // Maps to the VehicleOwner's ID
+    private String ownershipId;
 
     @Column(nullable = false)
-    private int remainingQuota;  // Quota that resets every week
+    private double remainingQuota;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_class", referencedColumnName = "vehicle_class")
@@ -85,7 +85,7 @@ public class Vehicle {
         this.ownershipId = ownershipId;
     }
 
-    public void setRemainingQuota(int remainingQuota) {
+    public void setRemainingQuota(double remainingQuota) {
         this.remainingQuota = remainingQuota;
     }
 

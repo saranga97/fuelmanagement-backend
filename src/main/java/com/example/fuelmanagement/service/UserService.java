@@ -4,9 +4,11 @@ import com.example.fuelmanagement.DTO.AdminDTO;
 import com.example.fuelmanagement.DTO.StationOwnerDTO;
 import com.example.fuelmanagement.DTO.VehicleOwnerDTO;
 import com.example.fuelmanagement.model.Admin;
+import com.example.fuelmanagement.model.Operator;
 import com.example.fuelmanagement.model.StationOwner;
 import com.example.fuelmanagement.model.VehicleOwner;
 import com.example.fuelmanagement.repository.AdminRepository;
+import com.example.fuelmanagement.repository.OperatorRepository;
 import com.example.fuelmanagement.repository.StationOwnerRepository;
 import com.example.fuelmanagement.repository.VehicleOwnerRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,12 +25,15 @@ public class UserService implements UserDetailsService {
     private final StationOwnerRepository stationOwnerRepository;
     private final AdminRepository adminRepository;
 
+    private final OperatorRepository operatorRepository;
+
     public UserService(VehicleOwnerRepository vehicleOwnerRepository,
                        StationOwnerRepository stationOwnerRepository,
-                       AdminRepository adminRepository) {
+                       AdminRepository adminRepository, OperatorRepository operatorRepository) {
         this.vehicleOwnerRepository = vehicleOwnerRepository;
         this.stationOwnerRepository = stationOwnerRepository;
         this.adminRepository = adminRepository;
+        this.operatorRepository = operatorRepository;
     }
 
     /**
@@ -82,10 +87,14 @@ public class UserService implements UserDetailsService {
             return vehicleOwner.get();
         }
 
-        // Search for the user in the StationOwner repository
         Optional<StationOwner> stationOwner = stationOwnerRepository.findByUsername(username);
         if (stationOwner.isPresent()) {
             return stationOwner.get();
+        }
+
+        Optional<Operator> operator = operatorRepository.findByUsername(username);
+        if (operator.isPresent()) {
+            return operator.get();
         }
 
         Optional<Admin> admin = adminRepository.findByUsername(username);
@@ -93,7 +102,6 @@ public class UserService implements UserDetailsService {
             return admin.get();
         }
 
-        // If user is not found in any repository, throw exception
         throw new UsernameNotFoundException("User not found with username: " + username);
     }
 

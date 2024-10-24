@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,11 @@ public class Station {
 
     @ManyToOne
     @JoinColumn(name = "station_owner_id", nullable = false)
+    @JsonIgnore
     private StationOwner stationOwner;
+
+    @OneToOne(mappedBy = "station", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private FuelInventory fuelInventory;
 
     public Station() {
     }

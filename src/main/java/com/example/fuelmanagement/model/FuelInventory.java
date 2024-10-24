@@ -12,7 +12,7 @@ public class FuelInventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "station_id", referencedColumnName = "stationId", nullable = false)
     private Station station;
 

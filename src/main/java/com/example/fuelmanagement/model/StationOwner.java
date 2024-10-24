@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +47,7 @@ public class StationOwner implements UserDetails {
     private UserRole role = UserRole.ROLE_STATION_OWNER;
 
     @OneToMany(mappedBy = "stationOwner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Station> stations;
 
     @Override

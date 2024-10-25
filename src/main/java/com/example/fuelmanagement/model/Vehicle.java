@@ -48,6 +48,10 @@ public class Vehicle {
     @JsonIgnore
     private VehicleQuota vehicleQuota;
 
+    public int getAllowedWeeklyCapacity() {
+        return this.vehicleQuota != null ? this.vehicleQuota.getWeeklyQuota() : 0;
+    }
+
     public void setVehicleId(Long vehicleId) {
         this.vehicleId = vehicleId;
     }

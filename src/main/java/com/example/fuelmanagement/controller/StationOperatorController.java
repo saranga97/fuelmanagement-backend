@@ -1,6 +1,9 @@
 package com.example.fuelmanagement.controller;
 
 import com.example.fuelmanagement.DTO.PumpFuelRequest;
+import com.example.fuelmanagement.DTO.StationWithQuotaDTO;
+import com.example.fuelmanagement.DTO.VehicleDetailsDTO;
+import com.example.fuelmanagement.DTO.VehicleRequestDTO;
 import com.example.fuelmanagement.model.*;
 import com.example.fuelmanagement.repository.StationRepository;
 import com.example.fuelmanagement.service.StationOperatorService;
@@ -43,5 +46,28 @@ public class StationOperatorController {
         return ResponseEntity.ok("Fuel pumped successfully and SMS sent.");
     }
 
+    @GetMapping("/station-details")
+    public ResponseEntity<StationWithQuotaDTO> getStationDetails(
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        // Fetch the station details for the logged-in operator
+        StationWithQuotaDTO stationDetails = operatorService.getStationDetails(userDetails.getUsername());
+
+        return ResponseEntity.ok(stationDetails);
+    }
+
+    @PostMapping("/vehicle-details")
+    public ResponseEntity<VehicleDetailsDTO> getVehicleDetails(
+            @RequestBody VehicleRequestDTO requestDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        // Extract the registration number from the request body
+        String registrationNumber = requestDTO.getRegistrationNumber();
+
+        // Fetch the vehicle details using the registration number
+        VehicleDetailsDTO vehicleDetails = operatorService.getVehicleDetailsByRegistrationNumber(registrationNumber);
+
+        return ResponseEntity.ok(vehicleDetails);
+    }
 
 }

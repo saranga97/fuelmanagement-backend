@@ -1,5 +1,7 @@
 package com.example.fuelmanagement.service;
 
+import com.example.fuelmanagement.DTO.StationWithQuotaDTO;
+import com.example.fuelmanagement.DTO.VehicleDetailsDTO;
 import com.example.fuelmanagement.model.*;
 import com.example.fuelmanagement.repository.*;
 import jakarta.annotation.PostConstruct;
@@ -96,5 +98,34 @@ public class StationOperatorService {
     public Operator getOperatorByUsername(String username) {
         return operatorRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Operator not found"));
+    }
+
+    public StationWithQuotaDTO getStationDetails(String username) {
+        Operator operator = operatorRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Operator not found"));
+
+        Station station = operator.getStation();
+
+        return new StationWithQuotaDTO(
+                station.getStationId(),
+                station.getName(),
+                station.getAddress(),
+                station.getFuelInventory().getDieselQuota(),
+                station.getFuelInventory().getSuperDieselQuota(),
+                station.getFuelInventory().getPetrol92Quota(),
+                station.getFuelInventory().getPetrol95Quota()
+        );
+    }
+
+    public VehicleDetailsDTO getVehicleDetailsByRegistrationNumber(String registrationNumber) {
+        Vehicle vehicle = vehicleRepository.findByRegistrationNumber(registrationNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Vehicle not found"));
+
+        return new VehicleDetailsDTO(
+                vehicle.getRegistrationNumber(),
+                vehicle.getFuelType(),
+                vehicle.getAllowedWeeklyCapacity(),  // Use the new getter method
+                vehicle.getRemainingQuota()
+        );
     }
 }

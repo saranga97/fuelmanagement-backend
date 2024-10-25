@@ -1,6 +1,7 @@
 package com.example.fuelmanagement.service;
 
 import com.example.fuelmanagement.DTO.VehicleDTO;
+import com.example.fuelmanagement.DTO.VehicleOwnerDTO;
 import com.example.fuelmanagement.DTO.VehicleOwnerResponseDTO;
 import com.example.fuelmanagement.model.*;
 import com.example.fuelmanagement.repository.DOMTVehicleRepository;
@@ -10,6 +11,7 @@ import com.example.fuelmanagement.repository.VehicleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +24,14 @@ public class VehicleService {
     private final VehicleRepository vehicleRepository;
     private final DOMTVehicleRepository domtVehicleRepository;
     private final VehicleQuotaRepository vehicleQuotaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final VehicleOwnerRepository vehicleOwnerRepository;
-    public VehicleService(VehicleRepository vehicleRepository, DOMTVehicleRepository domtVehicleRepository, VehicleQuotaRepository vehicleQuotaRepository, VehicleOwnerRepository vehicleOwnerRepository) {
+    public VehicleService(VehicleRepository vehicleRepository, DOMTVehicleRepository domtVehicleRepository, VehicleQuotaRepository vehicleQuotaRepository, PasswordEncoder passwordEncoder, VehicleOwnerRepository vehicleOwnerRepository) {
         this.vehicleRepository = vehicleRepository;
         this.domtVehicleRepository = domtVehicleRepository;
         this.vehicleQuotaRepository = vehicleQuotaRepository;
+        this.passwordEncoder = passwordEncoder;
         this.vehicleOwnerRepository = vehicleOwnerRepository;
     }
 
@@ -114,5 +118,25 @@ public class VehicleService {
         }
 
         logger.info("Weekly quotas reset successfully.");
+    }
+
+    public void updateVehicleOwner(VehicleOwnerDTO ownerDTO, String username) {
+        // Find the existing vehicle owner by username
+        VehicleOwner vehicleOwner = vehicleOwnerRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Vehicle owner not found"));
+
+        // Update only the allowed fields
+        vehicleOwner.setFullName(ownerDTO.getFullName());
+        vehicleOwner.setEmail(ownerDTO.getEmail());
+        vehicleOwner.setUsername(ownerDTO.getUsername());
+        vehicleOwner.setPhoneNumber(ownerDTO.getPhoneNumber());
+
+        // Encrypt and update the password if it's provided
+        if (ownerDTO.getPassword() != null && !ownerDTO.getPassword().isEmpty()) {
+            vehicleOwner.setPassword(passwordEncoder.encode(ownerDTO.getPassword()));
+        }
+
+        // Save the updated owner details to the database
+        vehicleOwnerRepository.save(vehicleOwner);
     }
 }

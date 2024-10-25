@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -106,6 +107,22 @@ public class AdminService {
 
         Station station = new Station(name, address, owner);
         return stationRepository.save(station);
+    }
+
+    // Register a station by station owner's username
+    public Station registerStationByUsername(String name, String address, String ownerUsername) {
+        StationOwner owner = stationOwnerRepository.findByUsername(ownerUsername)
+                .orElseThrow(() -> new IllegalArgumentException("Station owner not found"));
+
+        Station station = new Station(name, address, owner);
+        return stationRepository.save(station);
+    }
+
+    // Get all station owner usernames
+    public List<String> getAllStationOwnerUsernames() {
+        return stationOwnerRepository.findAll().stream()
+                .map(StationOwner::getUsername)
+                .collect(Collectors.toList());
     }
 
 }

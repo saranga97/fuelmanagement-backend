@@ -45,8 +45,9 @@ public class StationOperatorService {
         Twilio.init(accountSid, authToken);
     }
 
-    public void pumpFuel(Long vehicleId, Long operatorId, double liters, FuelType fuelType, Station station) {
-        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+    public void pumpFuel(String registrationNumber, Long operatorId, double liters, FuelType fuelType, Station station) {
+        // Find the vehicle by registration number
+        Vehicle vehicle = vehicleRepository.findByRegistrationNumber(registrationNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found"));
 
         Operator operator = operatorRepository.findById(operatorId)
@@ -82,6 +83,7 @@ public class StationOperatorService {
 
         sendSMS(owner.getPhoneNumber(), liters, fuelType);
     }
+
 
     private void sendSMS(String phoneNumber, double liters, FuelType fuelType) {
         if (!phoneNumber.startsWith("+")) {

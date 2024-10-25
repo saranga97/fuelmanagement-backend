@@ -1,6 +1,7 @@
 package com.example.fuelmanagement.controller;
 
 import com.example.fuelmanagement.DTO.FuelInventoryUpdateDTO;
+import com.example.fuelmanagement.DTO.StationRegistrationDTO;
 import com.example.fuelmanagement.DTO.StationResponseDTO;
 import com.example.fuelmanagement.DTO.StationWithOwnerDTO;
 import com.example.fuelmanagement.model.*;
@@ -51,16 +52,16 @@ public class AdminController {
     }
 
     // Endpoint to register a new station
-    @PostMapping("/stations/register")
-    public ResponseEntity<Station> registerStation(
-            @RequestBody Station station,
-            @AuthenticationPrincipal UserDetails userDetails) {
-
-        validateAdminAccess(userDetails);
-        Station registeredStation = adminService.registerStation(
-                station.getName(), station.getAddress(), station.getStationOwner().getId());
-        return ResponseEntity.ok(registeredStation);
-    }
+//    @PostMapping("/stations/register")
+//    public ResponseEntity<Station> registerStation(
+//            @RequestBody Station station,
+//            @AuthenticationPrincipal UserDetails userDetails) {
+//
+//        validateAdminAccess(userDetails);
+//        Station registeredStation = adminService.registerStation(
+//                station.getName(), station.getAddress(), station.getStationOwner().getId());
+//        return ResponseEntity.ok(registeredStation);
+//    }
 
 //    @GetMapping("/stations")
 //    public ResponseEntity<List<Station>> getAllStationsWithOwners(
@@ -128,4 +129,32 @@ public class AdminController {
             throw new SecurityException("Access denied. Only admins are authorized.");
         }
     }
+
+    @PostMapping("/stations/register")
+    public ResponseEntity<Station> registerStation(
+            @RequestBody StationRegistrationDTO registrationDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        validateAdminAccess(userDetails);
+
+        Station registeredStation = adminService.registerStationByUsername(
+                registrationDTO.getName(),
+                registrationDTO.getAddress(),
+                registrationDTO.getOwnerUsername());
+
+        return ResponseEntity.ok(registeredStation);
+    }
+
+
+    // Endpoint to get all station owners by their usernames
+    @GetMapping("/station-owners/usernames")
+    public ResponseEntity<List<String>> getAllStationOwnerUsernames(
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        validateAdminAccess(userDetails);
+
+        List<String> usernames = adminService.getAllStationOwnerUsernames();
+        return ResponseEntity.ok(usernames);
+    }
+
 }

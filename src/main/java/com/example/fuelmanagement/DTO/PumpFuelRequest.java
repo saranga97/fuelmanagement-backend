@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PumpFuelRequest {
-    private Long vehicleId;
+    private String registrationNumber;
     private double litersPumped;
     private FuelType fuelType;
 }

@@ -36,7 +36,7 @@ public class StationOperatorController {
                 .orElseThrow(() -> new IllegalArgumentException("Station not found"));
 
         operatorService.pumpFuel(
-                pumpFuelRequest.getVehicleId(),
+                pumpFuelRequest.getRegistrationNumber(),  // Use registration number
                 operator.getId(),
                 pumpFuelRequest.getLitersPumped(),
                 pumpFuelRequest.getFuelType(),
@@ -45,6 +45,7 @@ public class StationOperatorController {
 
         return ResponseEntity.ok("Fuel pumped successfully and SMS sent.");
     }
+
 
     @GetMapping("/station-details")
     public ResponseEntity<StationWithQuotaDTO> getStationDetails(
@@ -69,5 +70,4 @@ public class StationOperatorController {
 
         return ResponseEntity.ok(vehicleDetails);
     }
-
 }

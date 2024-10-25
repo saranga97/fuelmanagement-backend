@@ -11,7 +11,6 @@ import lombok.Getter;
 })
 public class Vehicle {
 
-    // Getters and Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;

@@ -26,7 +26,6 @@ public class StationOperatorService {
     @Value("${twilio.phone_number}")
     private String twilioPhoneNumber;
 
-    // Constructor
     public StationOperatorService(VehicleRepository vehicleRepository,
                                   FuelInventoryRepository fuelInventoryRepository,
                                   PumpingRecordRepository pumpingRecordRepository,
@@ -39,7 +38,6 @@ public class StationOperatorService {
         this.vehicleOwnerRepository = vehicleOwnerRepository;
     }
 
-    // Initialize Twilio after the bean is constructed
     @PostConstruct
     public void initializeTwilio() {
         Twilio.init(accountSid, authToken);

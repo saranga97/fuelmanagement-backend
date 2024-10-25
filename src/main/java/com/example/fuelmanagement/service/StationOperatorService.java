@@ -2,10 +2,11 @@ package com.example.fuelmanagement.service;
 
 import com.example.fuelmanagement.model.*;
 import com.example.fuelmanagement.repository.*;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 
 @Service
 public class StationOperatorService {
@@ -13,9 +14,9 @@ public class StationOperatorService {
     private final VehicleRepository vehicleRepository;
     private final FuelInventoryRepository fuelInventoryRepository;
     private final PumpingRecordRepository pumpingRecordRepository;
-
     private final OperatorRepository operatorRepository;
     private final VehicleOwnerRepository vehicleOwnerRepository;
+
     @Value("${twilio.account_sid}")
     private String accountSid;
 
@@ -27,13 +28,18 @@ public class StationOperatorService {
 
     public StationOperatorService(VehicleRepository vehicleRepository,
                                   FuelInventoryRepository fuelInventoryRepository,
-                                  PumpingRecordRepository pumpingRecordRepository, OperatorRepository operatorRepository, VehicleOwnerRepository vehicleOwnerRepository) {
+                                  PumpingRecordRepository pumpingRecordRepository,
+                                  OperatorRepository operatorRepository,
+                                  VehicleOwnerRepository vehicleOwnerRepository) {
         this.vehicleRepository = vehicleRepository;
         this.fuelInventoryRepository = fuelInventoryRepository;
         this.pumpingRecordRepository = pumpingRecordRepository;
         this.operatorRepository = operatorRepository;
         this.vehicleOwnerRepository = vehicleOwnerRepository;
+    }
 
+    @PostConstruct
+    public void initializeTwilio() {
         Twilio.init(accountSid, authToken);
     }
 
@@ -76,7 +82,6 @@ public class StationOperatorService {
     }
 
     private void sendSMS(String phoneNumber, double liters, FuelType fuelType) {
-
         if (!phoneNumber.startsWith("+")) {
             phoneNumber = "+94" + phoneNumber.substring(1);
         }
@@ -88,10 +93,8 @@ public class StationOperatorService {
         ).create();
     }
 
-
     public Operator getOperatorByUsername(String username) {
         return operatorRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Operator not found"));
     }
-
 }

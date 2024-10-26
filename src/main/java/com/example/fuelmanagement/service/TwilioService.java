@@ -1,5 +1,6 @@
 package com.example.fuelmanagement.service;
 
+import com.example.fuelmanagement.model.FUEL_TYPE;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -17,7 +18,7 @@ public class TwilioService {
     private String authToken;
 
     @Value("${twilio.phone_number}")
-    private String fromPhoneNumber;
+    private String twilioPhoneNumber;
 
     @PostConstruct
     public void initTwilio() {
@@ -25,8 +26,22 @@ public class TwilioService {
         Twilio.init(accountSid, authToken);
     }
 
-    public void sendSms(String toPhoneNumber, String message) {
-        Message.creator(new PhoneNumber(toPhoneNumber), new PhoneNumber(fromPhoneNumber), message)
-                .create();
+//    public void sendSms(String toPhoneNumber, String message) {
+//        Message.creator(new PhoneNumber(toPhoneNumber), new PhoneNumber(fromPhoneNumber), message)
+//                .create();
+//    }
+
+
+    private void sendSMS(String phoneNumber, double liters, FUEL_TYPE fuelType) {
+        if (!phoneNumber.startsWith("+")) {
+            phoneNumber = "+94" + phoneNumber.substring(1);
+        }
+
+        Message.creator(
+                new com.twilio.type.PhoneNumber(phoneNumber),
+                new com.twilio.type.PhoneNumber(twilioPhoneNumber),
+                String.format("You pumped %.2f liters of %s", liters, fuelType)
+        ).create();
     }
+
 }
